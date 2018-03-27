@@ -10,4 +10,8 @@ var workspaceSchema = new Schema({
     moduleIds: [{ type: String }]
 });
 
+workspaceSchema.post('remove', (doc) => {
+    
+});
+
 mongoose.model('Workspace', workspaceSchema);

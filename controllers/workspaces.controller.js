@@ -3,8 +3,19 @@
 var mongoose = require('mongoose');
 var Workspace = mongoose.model('Workspace');
 var Application = mongoose.model('Application');
+var _ = require('lodash');
+
+exports.workspaceById = (req, res, next, id) => {
+    Workspace.findOne({ workspaceId: id }, (error, workspace) => {
+        if (error) return res.status(500).send(error);
+        if (!workspace) return res.status(404).send({ message: 'Workspace Not Found' });
+        req.workspace = workspace;
+        next();
+    });
+}
 
 exports.list = (req, res) => {
+    console.log(`LIST :: Workspaces`);
     Workspace.find({}, (error, workspaces) => {
         if (error) {
             console.log('ERROR');
@@ -16,47 +27,54 @@ exports.list = (req, res) => {
 }
 
 exports.create = (req, res) => {
-    return res.status(404).send({ message: 'Not Implemented' });
-}
-
-exports.read = (req, res) => {
-    return res.status(404).send({ message: 'Not Implemented' });
-}
-
-exports.update = (req, res) => {
-    Workspace.findOneAndUpdate({ workspaceId: req.params.workspaceId }, req.body, { upsert: true, new: true }, (error, updatedWorkspace) => {
+    console.log(`CREATE :: Workspace`);
+    var workspace = new Workspace(req.body);
+    workspace.save((error, newWorkspace) => {
         if (error) {
             console.log('ERROR');
             console.log(error);
-            return res.status(500).send(error);
+            return res.status(500).send({ message: 'Failed to create Workspace' });
         }
-        console.log(`Workspace ${req.params.workspaceId} updated successfully`);
+        return res.status(200).send(newWorkspace);
+    });
+}
+
+exports.read = (req, res) => {
+    console.log(`READ :: Workspace ${req.workspace.workspaceId}`);
+    return res.status(200).send(req.workspace);
+}
+
+exports.update = (req, res) => {
+    console.log(`UPDATE :: Workspace ${req.workspace.workspaceId}`);
+    var workspace = req.workspace;
+    _.extend(workspace, req.body);
+    workspace.save((error, updatedWorkspace) => {
+        if (error) {
+            console.log('ERROR');
+            console.log(error);
+            return res.status(500).send({ message: `Failed to update Workspace ${workspace.workspaceId}` });
+        }
         return res.status(200).send(updatedWorkspace);
     });
 }
 
 exports.delete = (req, res) => {
-    console.log(`Deleting Workspace ${req.params.workspaceId}`);
-    Workspace.remove({ workspaceId: req.params.workspaceId }, (error) => {
-        if (error) {
-            console.log('ERROR');
-            console.log(error);
-            return res.status(500).send(error);
-        }
-        return res.status(200).send();
+    console.log(`DELETE :: Workspace ${req.workspace.workspaceId}`);
+    req.workspace.remove(() => {
+        return res.status(200).send({ message: `Workspace ${req.workspace.workspaceId} deleted` });
     });
 }
 
 exports.addWorkspaceToApplications = (req, res) => {
-    let workspaceId = req.params.workspaceId;
+    let workspace = req.workspace;
     let applicationIds = req.body.applicationIds || [];
-    console.log(`Adding Workspace ${workspaceId} to Applications ${applicationIds.toString()}`);
-    Application.update({ applicationId: { $in: applicationIds } }, { $addToSet: { workspaceIds: workspaceId } }, { multi: true }, (error) => {
+    console.log(`Adding Workspace ${workspace.workspaceId} to Applications ${applicationIds.toString()}`);
+    Application.update({ applicationId: { $in: applicationIds } }, { $addToSet: { workspaceIds: workspace.workspaceId } }, { multi: true }, (error) => {
         if (error) {
             console.log('ERROR');
             console.log(error);
             return res.status(500).send(error);
         }
-        return res.status(200).send();
+        return res.status(200).send({ message: `Workspace ${workspace.workspaceId} added to Applications ${applicationIds.toString()}` });
     });
 }
