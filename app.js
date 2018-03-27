@@ -7,50 +7,33 @@ var db = mongoose.connect(mongoUri, (error) => {
     if (error) console.log(error);
 });
 
-var widgetConfigSchema = new mongoose.Schema({
-    contentComponentId: String,
-    x: Number,
-    y: Number,
-    h: Number,
-    w: Number,
-    header: {
-        visible: Boolean,
-        title: String
-    },
-    footer: {
-        visible: Boolean
-    },
-    parameters: Object
-});
-
-var WidgetConfig = mongoose.model('WidgetConfig', widgetConfigSchema);
 
 var app = express();
-var port = 3000;
+const PORT = 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+var originsAllowed = ['http://localhost:4200', 'http://localhost:4201', 'http://localhost:8080'];
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4201');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Methods', ['GET', 'POST', 'PUT', 'DELETE']);
+    if (originsAllowed.indexOf(req.headers.origin) > -1) res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
     next();
 });
- 
-app.get('/', (req, res) => {
-    return res.send({data: 'Hello World'});
-});
 
-app.get('/widget-configs', (req, res) => {
-    WidgetConfig.find({}, (error, configs) => {
-        if (error) {
-            console.log('ERROR:');
-            console.log(error);
-            return res.status(500).send({ error: error });
-        }
-        return res.status(200).send(configs);
-    });
-});
+// Models
+require('./models/application.model');
+require('./models/workspace.model');
+require('./models/module.model');
+require('./models/view.model');
+
+// Routes
+require('./routes/applications.routes')(app);
+require('./routes/workspaces.routes')(app);
+require('./routes/modules.routes')(app);
+require('./routes/views.routes')(app);
  
-app.listen(port, () => {
-    console.log('Server listening on port ' + port);
+app.listen(PORT, () => {
+    console.log('Server listening on port ' + PORT);
 });
