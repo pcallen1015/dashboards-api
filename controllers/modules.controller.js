@@ -15,13 +15,13 @@ exports.list = (req, res) => {
 }
 
 exports.create = (req, res) => {
-
+    return res.status(404).send({ message: 'Not Implemented' });
 }
 
 exports.read = (req, res) => {
-
+    return res.status(404).send({ message: 'Not Implemented' });
 }
 
 exports.update = (req, res) => {
-
+    return res.status(404).send({ message: 'Not Implemented' });
 }
