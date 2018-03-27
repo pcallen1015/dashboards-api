@@ -11,4 +11,6 @@ module.exports = (app) => {
     
     app.route('/views/:viewId/addToModules')
         .post(views.addViewToModules);
+    
+    app.param('viewId', views.viewById);
 }

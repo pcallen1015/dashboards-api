@@ -18,7 +18,6 @@ exports.list = (req, res) => {
     console.log(`LIST :: Workspaces`);
     Workspace.find({}, (error, workspaces) => {
         if (error) {
-            console.log('ERROR');
             console.log(error);
             return res.status(500).send(error);
         }
@@ -31,7 +30,6 @@ exports.create = (req, res) => {
     var workspace = new Workspace(req.body);
     workspace.save((error, newWorkspace) => {
         if (error) {
-            console.log('ERROR');
             console.log(error);
             return res.status(500).send({ message: 'Failed to create Workspace' });
         }
@@ -50,7 +48,6 @@ exports.update = (req, res) => {
     _.extend(workspace, req.body);
     workspace.save((error, updatedWorkspace) => {
         if (error) {
-            console.log('ERROR');
             console.log(error);
             return res.status(500).send({ message: `Failed to update Workspace ${workspace.workspaceId}` });
         }
@@ -71,7 +68,6 @@ exports.addWorkspaceToApplications = (req, res) => {
     console.log(`Adding Workspace ${workspace.workspaceId} to Applications ${applicationIds.toString()}`);
     Application.update({ applicationId: { $in: applicationIds } }, { $addToSet: { workspaceIds: workspace.workspaceId } }, { multi: true }, (error) => {
         if (error) {
-            console.log('ERROR');
             console.log(error);
             return res.status(500).send(error);
         }
