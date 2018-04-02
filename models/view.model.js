@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Module = mongoose.model('Module');
 
 var viewSchema = new Schema({
     viewId: { type: String },
@@ -19,6 +20,14 @@ var viewSchema = new Schema({
         showFooter: { type: Boolean },
         contentConfig: mongoose.Schema.Types.Mixed
     }]
+});
+
+viewSchema.post('remove', (view) => {
+    // Remove View from any Modules that reference it
+    let id = view.viewId;
+    Module.update({ viewIds: id }, { $pull: { viewIds: id } }, { multi: true }, (error, modules) => {
+        if (error) console.log(error);
+    });
 });
 
 mongoose.model('View', viewSchema);

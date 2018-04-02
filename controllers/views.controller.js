@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var View = mongoose.model('View');
+var Module = mongoose.model('Module');
 var _ = require('lodash');
 
 exports.viewById = (req, res, next, id) => {
@@ -27,12 +28,19 @@ exports.list = (req, res) => {
 
 exports.create = (req, res) => {
     console.log(`CREATE :: View`);
-    return res.status(404).send({ message: 'Not Implemented' });
+    var view = new View(req.body);
+    view.save((error, newView) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).send({ message: 'Failed to create View' });
+        }
+        return res.status(200).send(newView);
+    });
 }
 
 exports.read = (req, res) => {
     console.log(`READ :: View ${req.view.viewId}`);
-    return res.status(404).send({ message: 'Not Implemented' });
+    return res.status(200).send(req.view);
 }
 
 exports.update = (req, res) => {
@@ -45,6 +53,13 @@ exports.update = (req, res) => {
             return res.status(500).send(error);
         }
         return res.status(200).send(updatedView);
+    });
+}
+
+exports.delete = (req, res) => {
+    console.log(`DELETE :: View ${req.view.viewId}`);
+    req.view.remove(() => {
+        return res.status(200).send({ message: `View ${req.params.viewId} deleted` });
     });
 }
 
