@@ -2,14 +2,14 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 
-var mongoUri = 'mongodb://localhost:27017/bmi-sandbox';
-var db = mongoose.connect(mongoUri, (error) => {
+let init = require('./config/init')();
+let config = require('./config/config');
+
+var db = mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`, (error) => {
     if (error) console.log(error);
 });
 
-
 var app = express();
-const PORT = 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -34,6 +34,6 @@ require('./routes/workspaces.routes')(app);
 require('./routes/modules.routes')(app);
 require('./routes/views.routes')(app);
  
-app.listen(PORT, () => {
-    console.log('Server listening on port ' + PORT);
+app.listen(config.port, () => {
+    console.log('Server listening on port ' + config.port);
 });
