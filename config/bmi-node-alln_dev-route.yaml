@@ -1,0 +1,17 @@
+---
+kind: "Route"
+apiVersion: "v1"
+metadata:
+  name: "bmi-node"
+  labels:
+     component: "bmi-node"
+spec:
+   host: "bmi-node-dev.cisco.com"
+   to:
+     kind: "Service"
+     name: "bmi-node"
+   port:
+     targetPort: "web"
+   tls:
+     insecureEdgeTerminationPolicy: Allow
+     termination: edge

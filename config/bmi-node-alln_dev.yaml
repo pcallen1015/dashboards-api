@@ -1,0 +1,90 @@
+kind: "Service"
+apiVersion: "v1"
+metadata:
+  name: "bmi-node"
+spec:
+  ports:
+    -
+      name: "web"
+      protocol: "TCP"
+      port: 3000
+  selector:
+    name: "bmi-node"
+  type: "ClusterIP"
+  sessionAffinity: "None"
+---
+kind: "DeploymentConfig"
+apiVersion: "v1"
+metadata:
+  name: "bmi-node"
+spec:
+  template:
+    metadata:
+      labels:
+        name: "bmi-node"
+      annotations:
+        app_version: 'latest'
+    spec:
+      containers:
+        -
+          name: "bmi-node"
+          image: "containers.cisco.com/it_gats_it_architecture/bmi-node_bmi-node:__IMAGETAG__"
+          ports:
+            -
+              containerPort: 3000
+              protocol: "TCP"
+          env:
+            -
+              name: "APP_NAME"
+              value: "bmi-node"
+            -
+              name: "CISCO_LC"
+              value: "dev"
+          volumeMounts:
+            -
+              name: podinfo
+              mountPath: /etc/metadata
+              readOnly: false
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            capabilities: {}
+            privileged: false
+          #readinessProbe:
+          #  httpGet:
+          #    path: "/"
+          #    port: 3000
+          #  initialDelaySeconds: 15
+          #  timeoutSeconds: 1
+          #livenessProbe:
+          #  exec:
+          #    command:
+          #      - "/bin/true"
+          #  initialDelaySeconds: 15
+          #  timeoutSeconds: 1
+      volumes:
+        -
+          name: podinfo
+          downwardAPI:
+            items:
+              -
+                path: "labels"
+                fieldRef:
+                  fieldPath: metadata.labels
+              -
+                path: "annotations"
+                fieldRef:
+                  fieldPath: metadata.annotations
+      restartPolicy: "Always"
+      dnsPolicy: "ClusterFirst"
+  replicas: 1
+  selector:
+    name: "bmi-node"
+  triggers:
+    -
+      type: "ConfigChange"
+  strategy:
+    type: "Rolling"
+    rollingParams:
+      updatePeriodSeconds: 1
+      intervalSeconds: 1
+      timeoutSeconds: 120
