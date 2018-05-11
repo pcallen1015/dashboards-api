@@ -1,4 +1,4 @@
-FROM containers.cisco.com/it_gats_it_architecture/bmi-node_bmi-node:lastest
+FROM containers.cisco.com/it_gats_it_architecture/bmi-node_bmi-node
 
 WORKDIR /app
 COPY ./package.json /app/
