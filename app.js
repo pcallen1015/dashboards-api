@@ -37,7 +37,7 @@ require('./routes/modules.routes')(app);
 require('./routes/views.routes')(app);
 
 app.use((req, res, next) => {
-    console.log(`Time: ${Date.now().toString()}`);
+    console.log(`Server Time: ${new Date().toISOString()}`);
 });
  
 app.listen(config.port, () => {
