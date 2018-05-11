@@ -1,6 +1,7 @@
-FROM containers.cisco.com/it_gats_it_architecture/bmi-node_bmi-node
+FROM node:carbon
 
 WORKDIR /app
+
 COPY ./package.json /app/
 RUN npm install
 COPY . /app/
