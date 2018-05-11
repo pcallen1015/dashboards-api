@@ -1,7 +1,5 @@
-'use strict';
-
-var mongoose = require('mongoose');
-var Application = mongoose.model('Application');
+let mongoose = require('mongoose');
+let Application = mongoose.model('Application');
 
 exports.list = (req, res) => {
     Application.find({}, (error, applications) => {

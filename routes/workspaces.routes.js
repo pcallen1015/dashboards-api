@@ -1,7 +1,5 @@
-'use strict';
-
 module.exports = (app) => {
-    var workspaces = require('../controllers/workspaces.controller');
+    let workspaces = require('../controllers/workspaces.controller');
 
     app.route('/workspaces')
         .get(workspaces.list)

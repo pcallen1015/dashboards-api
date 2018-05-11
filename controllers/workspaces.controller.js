@@ -1,9 +1,7 @@
-'use strict';
-
-var mongoose = require('mongoose');
-var Workspace = mongoose.model('Workspace');
-var Application = mongoose.model('Application');
-var _ = require('lodash');
+let mongoose = require('mongoose');
+let Workspace = mongoose.model('Workspace');
+let Application = mongoose.model('Application');
+let _ = require('lodash');
 
 exports.workspaceById = (req, res, next, id) => {
     Workspace.findOne({ workspaceId: id }, (error, workspace) => {
@@ -27,7 +25,7 @@ exports.list = (req, res) => {
 
 exports.create = (req, res) => {
     console.log(`CREATE :: Workspace`);
-    var workspace = new Workspace(req.body);
+    let workspace = new Workspace(req.body);
     workspace.save((error, newWorkspace) => {
         if (error) {
             console.log(error);
@@ -44,7 +42,7 @@ exports.read = (req, res) => {
 
 exports.update = (req, res) => {
     console.log(`UPDATE :: Workspace ${req.workspace.workspaceId}`);
-    var workspace = req.workspace;
+    let workspace = req.workspace;
     _.extend(workspace, req.body);
     workspace.save((error, updatedWorkspace) => {
         if (error) {

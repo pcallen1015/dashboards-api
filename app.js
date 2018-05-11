@@ -29,16 +29,22 @@ require('./models/workspace.model');
 require('./models/module.model');
 require('./models/view.model');
 
+// Controllers
+let authCtrl = require('./controllers/authentication.controller');
+
+app.use(authCtrl.getUsername, authCtrl.checkWhitelist);
+
+app.use((req, res, next) => {
+    console.log(`[${req.username}] Server Time: ${new Date().toISOString()}`);
+    return next();
+});
+
 // Routes
 require('./routes/app.routes')(app);
 require('./routes/applications.routes')(app);
 require('./routes/workspaces.routes')(app);
 require('./routes/modules.routes')(app);
 require('./routes/views.routes')(app);
-
-app.use((req, res, next) => {
-    console.log(`Server Time: ${new Date().toISOString()}`);
-});
  
 app.listen(config.port, () => {
     console.log('Server listening on port ' + config.port);

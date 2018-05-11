@@ -1,9 +1,7 @@
-'use strict';
-
-var mongoose = require('mongoose');
-var View = mongoose.model('View');
-var Module = mongoose.model('Module');
-var _ = require('lodash');
+let mongoose = require('mongoose');
+let View = mongoose.model('View');
+let Module = mongoose.model('Module');
+let _ = require('lodash');
 
 exports.viewById = (req, res, next, id) => {
     View.findOne({ viewId: id }, (error, view) => {
@@ -28,7 +26,7 @@ exports.list = (req, res) => {
 
 exports.create = (req, res) => {
     console.log(`CREATE :: View`);
-    var view = new View(req.body);
+    let view = new View(req.body);
     view.save((error, newView) => {
         if (error) {
             console.log(error);

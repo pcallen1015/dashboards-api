@@ -1,7 +1,5 @@
-'use strict';
-
 module.exports = (app) => {
-    var views = require('../controllers/views.controller');
+    let views = require('../controllers/views.controller');
 
     app.route('/views')
         .get(views.list)

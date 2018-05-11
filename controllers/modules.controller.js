@@ -1,9 +1,7 @@
-'use strict';
-
-var mongoose = require('mongoose');
-var Module = mongoose.model('Module');
-var Workspace = mongoose.model('Workspace');
-var _ = require('lodash');
+let mongoose = require('mongoose');
+let Module = mongoose.model('Module');
+let Workspace = mongoose.model('Workspace');
+let _ = require('lodash');
 
 exports.moduleById = (req, res, next, id) => {
     Module.findOne({ moduleId: id }, (error, module) => {
@@ -28,7 +26,7 @@ exports.list = (req, res) => {
 
 exports.create = (req, res) => {
     console.log(`CREATE :: Module`);
-    var module = new Module(req.body);
+    let module = new Module(req.body);
     module.save((error, newModule) => {
         if (error) {
             console.log(error);

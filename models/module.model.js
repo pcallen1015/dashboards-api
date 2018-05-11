@@ -1,8 +1,8 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var Workspace = mongoose.model('Workspace');
+let mongoose = require('mongoose');
+let Schema = mongoose.Schema;
+let Workspace = mongoose.model('Workspace');
 
-var moduleSchema = new Schema({
+let moduleSchema = new Schema({
     moduleId: { type: String },
     name: { type: String },
     description: { type: String },
