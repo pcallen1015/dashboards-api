@@ -12,4 +12,5 @@ RUN chown -R :root /app &&\
 USER node
 
 EXPOSE 3000
-ENTRYPOINT ["node", "/app/app.js"]
+# ENTRYPOINT ["node", "/app/app.js"]
+CMD ["npm", "start"]
