@@ -29,6 +29,13 @@ spec:
         -
           name: "bmi-node"
           image: "containers.cisco.com/it_gats_it_architecture/bmi-node_bmi-node:__IMAGETAG__"
+          resources:
+            requests:
+              cpu: 1
+              memory: 2Gi
+            limits:
+              cpu: 2
+              memory: 4Gi
           ports:
             -
               containerPort: 3000
@@ -47,6 +54,7 @@ spec:
               readOnly: false
           imagePullPolicy: "IfNotPresent"
           securityContext:
+            runAsUser: 0
             capabilities: {}
             privileged: false
           #readinessProbe:
@@ -87,4 +95,4 @@ spec:
     rollingParams:
       updatePeriodSeconds: 1
       intervalSeconds: 1
-      timeoutSeconds: 120
+      timeoutSeconds: 300
