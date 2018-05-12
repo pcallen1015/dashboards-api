@@ -30,12 +30,12 @@ spec:
           name: "bmi-node"
           image: "containers.cisco.com/it_gats_it_architecture/bmi-node_bmi-node:__IMAGETAG__"
           resources:
-            requests:
-              cpu: 1
-              memory: 1Gi
             limits:
-              cpu: 1
+              cpu: 2200m
               memory: 2Gi
+            requests:
+              cpu: 220m
+              memory: 1Gi
           ports:
             -
               containerPort: 3000
