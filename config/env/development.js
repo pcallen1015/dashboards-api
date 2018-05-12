@@ -1,7 +1,8 @@
 module.exports = {
+    port: 3000,
     db: {
-        host: 'sj-il-bmi-mongo',
-        port: 27017,
-        name: 'bmi-sandbox'
+        host: process.env.MONGODB_HOST || 'sj-il-bmi-mongo',
+        port: process.env.MONGODB_PORT || 27017,
+        name: process.env.MONGODB_NAME || 'bmi-sandbox'
     }
 }

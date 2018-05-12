@@ -50,6 +50,15 @@ spec:
             -
               name: "NODE_ENV"
               value: "development"
+            -
+              name: "MONGODB_HOST"
+              value: "sj-il-bmi-mongo"
+            -
+              name: "MONGODB_PORT"
+              value: 27017
+            -
+              name: "MONGODB_NAME"
+              value: "bmi-sandbox"
           volumeMounts:
             -
               name: podinfo

@@ -7,7 +7,9 @@ let request = require('request');
 let init = require('./config/init')();
 let config = require('./config/config');
 
-let db = mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.name}`, (error) => {
+let mongoUri = `${config.db.host}:${config.db.port}/${config.db.name}`;
+console.log(`Connecting to MongoDB: ${mongoUri}`);
+let db = mongoose.connect(`mongodb://${mongoUri}`, (error) => {
     if (error) console.log(error);
 });
 
@@ -62,6 +64,4 @@ app.route('/starwars')
  
 app.listen(config.port, () => {
     console.log(`Server listening on port ${config.port}`);
-    console.log(`App Name: ${process.env.APP_NAME}`);
-    console.log(`Environment: ${process.env.ENV}`);
 });
