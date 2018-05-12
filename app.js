@@ -2,6 +2,7 @@ let express = require('express');
 let mongoose = require('mongoose');
 let path = require('path');
 let bodyParser = require('body-parser');
+let request = require('request');
 
 let init = require('./config/init')();
 let config = require('./config/config');
@@ -45,6 +46,19 @@ require('./routes/applications.routes')(app);
 require('./routes/workspaces.routes')(app);
 require('./routes/modules.routes')(app);
 require('./routes/views.routes')(app);
+
+app.route('/starwars')
+    .get((req, res) => {
+        console.log('== EXTERNAL REQUEST TEST ==');
+        return request(`https://swapi.co/api/people/1`, { json: true }, (error, r, body) => {
+            if (error) {
+                console.log('ERROR');
+                console.log(error);
+                return res.status(500).send(error);
+            }
+            return res.send(body);
+        });
+    });
  
 app.listen(config.port, () => {
     console.log(`Server listening on port ${config.port}`);
