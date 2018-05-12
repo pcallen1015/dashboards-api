@@ -47,5 +47,5 @@ require('./routes/modules.routes')(app);
 require('./routes/views.routes')(app);
  
 app.listen(config.port, () => {
-    console.log('Server listening on port ' + config.port);
+    console.log(`Server listening on port ${config.port}`);
 });
