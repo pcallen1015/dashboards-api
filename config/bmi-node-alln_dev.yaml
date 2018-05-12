@@ -48,7 +48,7 @@ spec:
               name: "CISCO_LC"
               value: "dev"
             -
-              name: "ENV"
+              name: "NODE_ENV"
               value: "development"
           volumeMounts:
             -
