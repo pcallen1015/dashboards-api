@@ -62,4 +62,6 @@ app.route('/starwars')
  
 app.listen(config.port, () => {
     console.log(`Server listening on port ${config.port}`);
+    console.log(`App Name: ${process.env.APP_NAME}`);
+    console.log(`Environment: ${process.env.ENV}`);
 });

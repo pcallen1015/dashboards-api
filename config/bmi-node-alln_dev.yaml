@@ -47,6 +47,9 @@ spec:
             -
               name: "CISCO_LC"
               value: "dev"
+            -
+              name: "ENV"
+              value: "development"
           volumeMounts:
             -
               name: podinfo
