@@ -3,6 +3,7 @@ let mongoose = require('mongoose');
 let path = require('path');
 let bodyParser = require('body-parser');
 let request = require('request');
+const cors = require('cors');
 
 let init = require('./config/init')();
 let config = require('./config/config');
@@ -18,11 +19,14 @@ let app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let originsAllowed = ['http://localhost:4200', 'http://localhost:4201', 'http://localhost:8080'];
+app.use(cors({
+    origin: ['http://localhost:4200', /\.cisco\.com/],
+    credentials: true
+}));
+
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Methods', ['GET', 'POST', 'PUT', 'DELETE']);
-    if (originsAllowed.indexOf(req.headers.origin) > -1) res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PATCH, DELETE, OPTIONS');
     next();
 });
 
