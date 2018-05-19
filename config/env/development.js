@@ -1,4 +1,5 @@
 module.exports = {
+    name: 'development',
     port: 3000,
     db: {
         host: process.env.MONGODB_HOST || 'sj-il-bmi-mongo',
