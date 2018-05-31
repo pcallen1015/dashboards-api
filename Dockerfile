@@ -1,6 +1,7 @@
 FROM node:carbon
 
 WORKDIR /app
+RUN apt-get install telnet
 
 COPY ./package.json /app/
 RUN npm install
