@@ -1,3 +1,3 @@
-# BMI Node
+# Dashboards API
 
-A (temporary) lightweight Node.JS server for BMI.
+A lightweight Node.JS REST API for exposing configurations for dashboards-app.
